@@ -48,6 +48,7 @@ app.get("/janken", (req, res) => {
   } else {
   judgement = '負け';
   }
+  
   total += 1;
   // 今はダミーで人間の勝ちにしておく
   const display = {

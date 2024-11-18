@@ -61,4 +61,47 @@ app.get("/janken", (req, res) => {
   res.render( 'janken', display );
 });
 
+//新機能1:サイコロゲーム
+app.get("/dice", (req, res) => {
+  const userDice = Math.floor(Math.random() * 6 + 1);
+  const enemyDice = Math.floor(Math.random() * 6 + 1);
+  let result = "";
+
+  if (userDice > enemyDice) {
+    result = "あなたの勝ち！";
+  } else if (userDice < enemyDice) {
+    result = "あなたの負け...";
+  } else {
+    result = "引き分け";
+  }
+
+  res.render("dice", { userDice, enemyDice, result });
+});
+
+//新機能2:ポ◯モン
+app.get("/battle", (req, res) => {
+  const userChoice = req.query.choice || "炎";
+  const choices = ["炎", "水", "草"];
+  const enemyChoice = choices[Math.floor(Math.random() * choices.length)];
+
+  let result = "";
+  if (
+    (userChoice === "炎" && enemyChoice === "草") ||
+    (userChoice === "水" && enemyChoice === "炎") ||
+    (userChoice === "草" && enemyChoice === "水")
+  ) {
+    result = "相性抜群だ！";
+  } else if (
+    (userChoice === "炎" && enemyChoice === "水") ||
+    (userChoice === "水" && enemyChoice === "草") ||
+    (userChoice === "草" && enemyChoice === "炎")
+  ) {
+    result = "イマイチのようだ...";
+  } else {
+    result = "普通だ";
+  }
+
+  res.render("battle", { userChoice, enemyChoice, result });
+});
+
 app.listen(8080, () => console.log("Example app listening on port 8080!"));
